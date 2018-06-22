@@ -10,7 +10,6 @@ import {
     Dimensions
 } from 'react-native';
 
-import Icon from 'react-native-vector-icons/FontAwesome';
 const width = Dimensions.get('screen').width;
 
 export default class Home extends Component {
