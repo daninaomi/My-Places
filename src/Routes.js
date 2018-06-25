@@ -1,21 +1,20 @@
 
 import React, { Component } from 'react';
-import { createStackNavigator } from 'react-navigation'; import {
+import { createStackNavigator, createBottomTabNavigator } from 'react-navigation'; 
+import {
     StyleSheet,
     View,
     TouchableOpacity,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Home from './screens/Home'
-import HeaderBar from './components/HeaderBar'
 import Search from './screens/Search'
-
 
 
 class HomeScreen extends Component {
     static navigationOptions = ({ navigation }) => {
         return {
-            title: 'Unsplash',
+            title: 'Home',
             headerRight: (
                 <TouchableOpacity style={styles.searchButton}
                     onPress={() => navigation.navigate('SearchScreen')}>
@@ -24,7 +23,6 @@ class HomeScreen extends Component {
             )
         }
     }
-
 
     // sair = () => {
     //     this.props.navigation.navigate('LoginScreen')
@@ -39,9 +37,9 @@ class HomeScreen extends Component {
 }
 
 class SearchScreen extends Component {
-    // static navigationOptions = {
-    //     title: 'Unsplash'
-    // };
+    static navigationOptions = {
+        title: 'Pesquisar'
+    };
 
     render() {
         return (
@@ -50,48 +48,62 @@ class SearchScreen extends Component {
     }
 }
 
+// const RootStack = createStackNavigator(
+//     {
+//         HomeScreen: HomeScreen,
+//         SearchScreen: SearchScreen
+//         // LoginScreen: LoginScreen
+//     },
+//     {
+//         initialRouteName: 'HomeScreen',
+//         navigationOptions: {
+//             // headerRight: <Header />,
+//             headerStyle: {
+//                 backgroundColor: 'black',
+//             },
+//             headerTintColor: '#fff',
+//             headerTitleStyle: {
+//                 fontWeight: 'bold',
+//             }
+//         }
+//     },
+// );
 
-const RootStack = createStackNavigator(
-    {
-        HomeScreen: HomeScreen,
-        SearchScreen: SearchScreen
-        // LoginScreen: LoginScreen
-    },
-    {
-        initialRouteName: 'HomeScreen',
-        navigationOptions: {
-            // headerRight: <Header />,
-            headerStyle: {
-                backgroundColor: 'black',
-            },
-            headerTintColor: '#fff',
-            headerTitleStyle: {
-                fontWeight: 'bold',
-            }
-        }
-    },
-    // {
-    //     navigationOptions: ({ navigation }) => {
-    //         return {
-    //             title: 'Unsplash',
-    //             headerRight: (
-    //                 <TouchableOpacity
-    //                     onPress={() => navigation.navigate('SearchScreen')}>
-    //                     <Icon name="search" size={20} color="white" />
-    //                 </TouchableOpacity>
-    //             )
-    //         }
-    //     }
-    // }
-);
-
-export default RootStack
+// export default RootStack
 
 const styles = StyleSheet.create({
     searchButton: {
         marginRight: 20
     }
 })
+
+export default createBottomTabNavigator(
+    {
+      HomeScreen: HomeScreen,
+      SearchScreen: SearchScreen,
+    },
+    {
+      navigationOptions: ({ navigation }) => ({
+        tabBarIcon: ({ focused, tintColor }) => {
+          const { routeName } = navigation.state;
+          let iconName;
+          if (routeName === 'HomeScreen') {
+            iconName = `home`;
+          } else if (routeName === 'SearchScreen') {
+            iconName = `search`;
+          }
+  
+          // You can return any component that you like here! We usually use an
+          // icon component from react-native-vector-icons
+          return <Icon name={iconName} size={25} color={tintColor} />;
+        },
+      }),
+      tabBarOptions: {
+        activeTintColor: '#542C8A',
+        inactiveTintColor: 'gray',
+      },
+    }
+  );
 
 // navigationOptions = ({ navigation }) => {
 //             return {

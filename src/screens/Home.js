@@ -23,7 +23,7 @@ export default class Home extends Component {
             fotos: [],
             msg: '',
             isLoading: true,
-            fetching_Status: false
+            fetchingStatus: false
         }
         this.page = 1
     }
@@ -66,13 +66,13 @@ export default class Home extends Component {
     loadMorePictures = () => {
         this.page = this.page + 1;
 
-        this.setState({ fetching_Status: true }, () => {
+        this.setState({ fetchingStatus: true }, () => {
             fetch(`https://api.unsplash.com/photos?page=${this.page}&client_id=d2f9218a71fd93fb4b0cab51fd5b0bb3ec38100443ee5577787a278cd7b6d394`)
                 .then((response) => response.json())
                 .then((responseJson) => {
                     this.setState({
                         fotos: [ ...this.state.fotos, ...responseJson ],
-                        fetching_Status: false
+                        fetchingStatus: false
                     });
                 })
                 .catch((error) => {
@@ -93,7 +93,7 @@ export default class Home extends Component {
 
                     <Text style={styles.buttonText}>Carregar mais fotos</Text>
                     {
-                        (this.state.fetching_Status)
+                        (this.state.fetchingStatus)
                             ?
                             <ActivityIndicator color="#fff" style={{ marginLeft: 6 }} />
                             :
@@ -174,6 +174,7 @@ const styles = StyleSheet.create({
     },
     title: {
         margin: 15,
+        marginTop: 30,
         marginBottom: 25,
         fontSize: 22
     },
@@ -198,29 +199,28 @@ const styles = StyleSheet.create({
         marginLeft: 15
     },
     photoDescription: {
-        fontSize: 18
+        marginBottom: 5,
+        fontSize: 18,
+        textDecorationLine: 'underline'
     },
     imagem: {
         width: (width) - 25,
         height: (width / 2) - 25
     },
-    footerStyle:
-    {
+    footerStyle: {
         margin: 15,
         alignItems: 'center',
         justifyContent: 'center'
     },
-    buttonLoadMore:
-    {
+    buttonLoadMore: {
         padding: 15,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#F44336',
+        backgroundColor: '#542C8A',
         borderRadius: 5,
     },
-    buttonText:
-    {
+    buttonText: {
         textAlign: 'center',
         color: '#fff',
         fontSize: 18
