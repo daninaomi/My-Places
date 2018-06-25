@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { createStackNavigator } from 'react-navigation';import {
+import { createStackNavigator } from 'react-navigation'; import {
     StyleSheet,
     View,
     TouchableOpacity,
@@ -10,29 +10,21 @@ import Home from './screens/Home'
 import HeaderBar from './components/HeaderBar'
 import Search from './screens/Search'
 
-class Header extends Component {
 
-    pesquisa = () => {
-        this.props.navigation.navigate('SearchScreen')
-    }
-
-    render() {
-        return (
-            // <HeaderBar />
-            <View>
-                <TouchableOpacity
-                    onPress={this.pesquisa}>
-                    <Icon name="search" size={20} color="white" />
-                </TouchableOpacity>
-            </View>
-        );
-    }
-}
 
 class HomeScreen extends Component {
-    static navigationOptions = {
-        title: 'Unsplash'
-    };
+    static navigationOptions = ({ navigation }) => {
+        return {
+            title: 'Unsplash',
+            headerRight: (
+                <TouchableOpacity style={styles.searchButton}
+                    onPress={() => navigation.navigate('SearchScreen')}>
+                    <Icon name="search" size={20} color="white" />
+                </TouchableOpacity>
+            )
+        }
+    }
+
 
     // sair = () => {
     //     this.props.navigation.navigate('LoginScreen')
@@ -68,7 +60,7 @@ const RootStack = createStackNavigator(
     {
         initialRouteName: 'HomeScreen',
         navigationOptions: {
-            headerRight: <Header />,
+            // headerRight: <Header />,
             headerStyle: {
                 backgroundColor: 'black',
             },
@@ -77,10 +69,29 @@ const RootStack = createStackNavigator(
                 fontWeight: 'bold',
             }
         }
-    }
+    },
+    // {
+    //     navigationOptions: ({ navigation }) => {
+    //         return {
+    //             title: 'Unsplash',
+    //             headerRight: (
+    //                 <TouchableOpacity
+    //                     onPress={() => navigation.navigate('SearchScreen')}>
+    //                     <Icon name="search" size={20} color="white" />
+    //                 </TouchableOpacity>
+    //             )
+    //         }
+    //     }
+    // }
 );
 
 export default RootStack
+
+const styles = StyleSheet.create({
+    searchButton: {
+        marginRight: 20
+    }
+})
 
 // navigationOptions = ({ navigation }) => {
 //             return {
@@ -99,3 +110,22 @@ export default RootStack
 //                 }
 //             }
 //         }
+
+// class Header extends Component {
+
+//     pesquisa = () => {
+//         this.props.navigation.navigate('SearchScreen')
+//     }
+
+//     render() {
+//         return (
+//             // <HeaderBar />
+//             <View>
+//                 <TouchableOpacity
+//                     onPress={this.pesquisa}>
+//                     <Icon name="search" size={20} color="white" />
+//                 </TouchableOpacity>
+//             </View>
+//         );
+//     }
+// }

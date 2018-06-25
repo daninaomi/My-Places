@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import {
     StyleSheet,
     View,
-    TouchableOpacity,
+    TextInput,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -25,7 +25,7 @@ export default class Search extends Component {
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        padding: 10
+        padding: 15
     },
     title: {
         fontSize: 22,
@@ -33,14 +33,14 @@ const styles = StyleSheet.create({
         flex: 1
     },
     searchContainer: {
-        width: 150,
+        // width: 150,
         flexDirection: 'row',
         alignItems: 'center',
         padding: 5,
         borderRadius: 5,
-        backgroundColor: 'rgba(255,255,255,.3)'
+        backgroundColor: 'black'
     },
     searchInput: {
-        width: 150
+        // width: 150
     }
 })
