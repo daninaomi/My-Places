@@ -1,6 +1,9 @@
 
 import React, { Component } from 'react';
-import { createStackNavigator, createBottomTabNavigator } from 'react-navigation'; 
+import {
+    StackNavigator,
+    createBottomTabNavigator
+} from 'react-navigation';
 import {
     StyleSheet,
     View,
@@ -9,6 +12,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Home from './screens/Home'
 import Search from './screens/Search'
+import Login from './screens/Login'
 
 
 class HomeScreen extends Component {
@@ -48,28 +52,19 @@ class SearchScreen extends Component {
     }
 }
 
-// const RootStack = createStackNavigator(
-//     {
-//         HomeScreen: HomeScreen,
-//         SearchScreen: SearchScreen
-//         // LoginScreen: LoginScreen
-//     },
-//     {
-//         initialRouteName: 'HomeScreen',
-//         navigationOptions: {
-//             // headerRight: <Header />,
-//             headerStyle: {
-//                 backgroundColor: 'black',
-//             },
-//             headerTintColor: '#fff',
-//             headerTitleStyle: {
-//                 fontWeight: 'bold',
-//             }
-//         }
-//     },
-// );
+class LoginScreen extends Component {
 
-// export default RootStack
+    entrar = () => {
+        this.props.navigation.navigate('HomeScreen')
+    }
+
+    render() {
+        return (
+            <Login login={this.entrar} />
+        )
+    }
+}
+
 
 const styles = StyleSheet.create({
     searchButton: {
@@ -77,33 +72,47 @@ const styles = StyleSheet.create({
     }
 })
 
+// const MainNav = StackNavigator({
+//     Home: { screen: HomeScreen },
+//     Search: { screen: SearchScreen },
+// });
+
+// const TopLevelNav = StackNavigator({
+//     Login: { screen: LoginScreen },
+//     Main: { screen: MainNav },
+// }, {
+//         headerMode: 'none',
+//     });
+
 export default createBottomTabNavigator(
     {
-      HomeScreen: HomeScreen,
-      SearchScreen: SearchScreen,
+        HomeScreen: HomeScreen,
+        SearchScreen: SearchScreen,
+        LoginScreen: LoginScreen,
+        // TopLevelNav: TopLevelNav
     },
     {
-      navigationOptions: ({ navigation }) => ({
-        tabBarIcon: ({ focused, tintColor }) => {
-          const { routeName } = navigation.state;
-          let iconName;
-          if (routeName === 'HomeScreen') {
-            iconName = `home`;
-          } else if (routeName === 'SearchScreen') {
-            iconName = `search`;
-          }
-  
-          // You can return any component that you like here! We usually use an
-          // icon component from react-native-vector-icons
-          return <Icon name={iconName} size={25} color={tintColor} />;
+        navigationOptions: ({ navigation }) => ({
+            tabBarIcon: ({ focused, tintColor }) => {
+                const { routeName } = navigation.state;
+                let iconName;
+                if (routeName === 'HomeScreen') {
+                    iconName = `home`;
+                } else if (routeName === 'SearchScreen') {
+                    iconName = `search`;
+                }
+
+                return <Icon name={iconName} size={25} color={tintColor} />;
+            },
+        }),
+        tabBarOptions: {
+            activeTintColor: '#542C8A',
+            inactiveTintColor: 'gray',
         },
-      }),
-      tabBarOptions: {
-        activeTintColor: '#542C8A',
-        inactiveTintColor: 'gray',
-      },
     }
-  );
+);
+
+
 
 // navigationOptions = ({ navigation }) => {
 //             return {
@@ -141,3 +150,27 @@ export default createBottomTabNavigator(
 //         );
 //     }
 // }
+
+
+// const RootStack = createStackNavigator(
+//     {
+//         HomeScreen: HomeScreen,
+//         SearchScreen: SearchScreen
+//         // LoginScreen: LoginScreen
+//     },
+//     {
+//         initialRouteName: 'HomeScreen',
+//         navigationOptions: {
+//             // headerRight: <Header />,
+//             headerStyle: {
+//                 backgroundColor: 'black',
+//             },
+//             headerTintColor: '#fff',
+//             headerTitleStyle: {
+//                 fontWeight: 'bold',
+//             }
+//         }
+//     },
+// );
+
+// export default RootStack

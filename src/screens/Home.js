@@ -8,7 +8,6 @@ import {
     Image,
     ScrollView,
     Dimensions,
-    TouchableOpacity,
     ActivityIndicator
 } from 'react-native';
 import PicturesFeed from '../components/PicturesFeed'
@@ -79,7 +78,6 @@ export default class Home extends Component {
                 .catch((error) => {
                     console.error(error);
                 });
-
         });
     }
 
@@ -117,11 +115,16 @@ export default class Home extends Component {
                         (<ActivityIndicator size="large" />)
                         :
                         (
-                            <PicturesFeed fotos={this.state.fotos}
-                                // footer={this.renderFooter}
-                                loadMorePictures={this.loadMorePictures}
-                                fetchingStatus={this.state.fetchingStatus}
-                            />
+                            <View>
+                                <Text style={styles.title}>
+                                    Mais recentes
+                                </Text>
+                                <PicturesFeed fotos={this.state.fotos}
+                                    // footer={this.renderFooter}
+                                    loadMorePictures={this.loadMorePictures}
+                                    fetchingStatus={this.state.fetchingStatus}
+                                />
+                            </View>
                         )
                 }
 
@@ -151,7 +154,8 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     featuresSection: {
-        padding: 15,
+        paddingTop: 15,
+        paddingBottom: 15,
         backgroundColor: '#5E5E5E'
     },
     featuredPics: {
