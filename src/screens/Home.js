@@ -11,6 +11,7 @@ import {
     TouchableOpacity,
     ActivityIndicator
 } from 'react-native';
+import PicturesFeed from '../components/PicturesFeed'
 
 const width = Dimensions.get('screen').width;
 
@@ -71,7 +72,7 @@ export default class Home extends Component {
                 .then((response) => response.json())
                 .then((responseJson) => {
                     this.setState({
-                        fotos: [ ...this.state.fotos, ...responseJson ],
+                        fotos: [...this.state.fotos, ...responseJson],
                         fetchingStatus: false
                     });
                 })
@@ -82,36 +83,13 @@ export default class Home extends Component {
         });
     }
 
-    renderFooter = () => {
-        return (
-            <View style={styles.footerStyle}>
-
-                <TouchableOpacity style={styles.buttonLoadMore}
-                    activeOpacity={0.7}
-                    onPress={this.loadMorePictures}
-                >
-
-                    <Text style={styles.buttonText}>Carregar mais fotos</Text>
-                    {
-                        (this.state.fetchingStatus)
-                            ?
-                            <ActivityIndicator color="#fff" style={{ marginLeft: 6 }} />
-                            :
-                            null
-                    }
-
-                </TouchableOpacity>
-
-            </View>
-        )
-    }
-
     render() {
         return (
             <ScrollView style={styles.container}>
 
                 <Text style={styles.title}>
-                    Bem-vindo
+                    Bem-vindx {"\n"}
+                    à seu feed
                 </Text>
 
                 <Text style={styles.subtitle}>
@@ -139,23 +117,10 @@ export default class Home extends Component {
                         (<ActivityIndicator size="large" />)
                         :
                         (
-
-                            <FlatList
-                                keyExtractor={item => item.id}
-                                data={this.state.fotos}
-                                numColumns='1'
-                                ListFooterComponent={this.renderFooter}
-                                renderItem={({ item }) =>
-
-                                    <View style={styles.photoCard}>
-                                        <Image style={styles.imagem}
-                                            source={{ uri: item.urls.small }} />
-
-                                        <Text style={styles.photoDescription}>
-                                            {item.user.name}
-                                        </Text>
-                                    </View>
-                                }
+                            <PicturesFeed fotos={this.state.fotos}
+                                // footer={this.renderFooter}
+                                loadMorePictures={this.loadMorePictures}
+                                fetchingStatus={this.state.fetchingStatus}
                             />
                         )
                 }
@@ -206,23 +171,5 @@ const styles = StyleSheet.create({
     imagem: {
         width: (width) - 25,
         height: (width / 2) - 25
-    },
-    footerStyle: {
-        margin: 15,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    buttonLoadMore: {
-        padding: 15,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#542C8A',
-        borderRadius: 5,
-    },
-    buttonText: {
-        textAlign: 'center',
-        color: '#fff',
-        fontSize: 18
     }
 });

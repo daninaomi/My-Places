@@ -6,12 +6,14 @@ import {
     TextInput,
     TouchableOpacity,
     Dimensions,
-    FlatList,
-    Image,
+    ScrollView,
     Text,
-    Keyboard
+    Keyboard,
+    FlatList,
+    Image
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import PicturesFeed from '../components/PicturesFeed'
 
 const width = Dimensions.get('screen').width;
 
@@ -21,20 +23,23 @@ export default class Search extends Component {
         super()
         this.state = {
             term: '',
-            fotos: []
+            fotos: [],
+            isLoading: true,
+            fetchingStatus: false
         }
+        this.page = 1
     }
 
     onSubmit = () => {
-        fetch(`https://api.unsplash.com/search/photos?query=${this.state.term}&client_id=d2f9218a71fd93fb4b0cab51fd5b0bb3ec38100443ee5577787a278cd7b6d394`)
+        fetch(`https://api.unsplash.com/search/photos?page=${this.page}&query=${this.state.term}&client_id=d2f9218a71fd93fb4b0cab51fd5b0bb3ec38100443ee5577787a278cd7b6d394`)
             .then(res => res.json())
             .then(response => {
                 // console.warn(response)
                 this.setState({
                     ...this.state.fotos,
                     fotos: response.results,
-                    term: ''
-                    // isLoading: false
+                    // term: '',
+                    isLoading: false
                 })
             }
             )
@@ -46,20 +51,35 @@ export default class Search extends Component {
             })
     }
 
+    loadMorePictures = () => {
+        this.page = this.page + 1;
+
+        this.setState({ fetchingStatus: true }, () => {
+            fetch(`https://api.unsplash.com/search/photos?page=${this.page}&query=${this.state.term}&client_id=d2f9218a71fd93fb4b0cab51fd5b0bb3ec38100443ee5577787a278cd7b6d394`)
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    this.setState({
+                        fotos: [...this.state.fotos, ...responseJson.results],
+                        fetchingStatus: false
+                    });
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        });
+    }
+
     render() {
         return (
             <View>
-                <View style={styles.container}>
-                    {/* <Text style={styles.title}>Unsplash</Text> */}
-                    <View style={styles.searchContainer}>
-                        <TextInput style={styles.searchInput}
-                            placeholder='o que procura?'
-                            underlineColorAndroid='transparent'
-                            placeholderTextColor='white'
-                            onChangeText={term => this.setState({ term: term })}
-                            value={this.state.term}
-                        />
-                    </View>
+                <View style={styles.searchContainer}>
+                    <TextInput style={styles.searchInput}
+                        placeholder='o que procura?'
+                        underlineColorAndroid='transparent'
+                        placeholderTextColor='white'
+                        onChangeText={term => this.setState({ term: term })}
+                        value={this.state.term}
+                    />
                     <TouchableOpacity style={styles.searchButton}
                         onPress={this.onSubmit}
                     >
@@ -67,31 +87,19 @@ export default class Search extends Component {
                     </TouchableOpacity>
                 </View>
 
-
-                <FlatList
-                    keyExtractor={item => item.id}
-                    data={this.state.fotos}
-                    numColumns='1'
-                    // ListFooterComponent={this.renderFooter}
-                    renderItem={({ item }) =>
-
-                        <View style={styles.photoCard}>
-                            <Image style={styles.imagem}
-                                source={{ uri: item.urls.small }} />
-
-                            <Text style={styles.photoDescription}>
-                                {item.user.name}
-                            </Text>
-                        </View>
-                    }
-                />
+                <ScrollView style={styles.resultsList}>
+                    <PicturesFeed fotos={this.state.fotos}
+                        loadMorePictures={this.loadMorePictures}
+                        fetchingStatus={this.state.fetchingStatus}
+                    />
+                </ScrollView>
             </View>
         );
     }
 }
 
 const styles = StyleSheet.create({
-    container: {
+    searchContainer: {
         flexDirection: 'row',
         padding: 15
     },
@@ -100,17 +108,14 @@ const styles = StyleSheet.create({
         color: 'white',
         flex: 1
     },
-    searchContainer: {
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        padding: 5,
-        borderRadius: 5,
-        backgroundColor: 'grey'
-    },
     searchInput: {
         flex: 1,
-        color: 'white'
+        color: 'white',
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 10,
+        borderRadius: 5,
+        backgroundColor: 'grey'
     },
     searchButton: {
         width: 50,
@@ -130,5 +135,8 @@ const styles = StyleSheet.create({
     imagem: {
         width: (width) - 30,
         height: (width / 2) - 25
+    },
+    resultsList: {
+        marginBottom: 80
     }
 })
