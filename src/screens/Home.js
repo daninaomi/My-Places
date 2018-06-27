@@ -26,6 +26,7 @@ export default class Home extends Component {
             fetchingStatus: false
         }
         this.page = 1
+        this.curatedPage = 1
     }
 
     componentDidMount() {
@@ -61,6 +62,24 @@ export default class Home extends Component {
                     msg: erro
                 })
             })
+    }
+
+    loadMoreCuratedPictures = () => {
+        this.curatedPage = this.curatedPage + 1;
+
+        this.setState({ fetchingStatus: true }, () => {
+            fetch(`https://api.unsplash.com/photos?page=${this.curatedPage}&client_id=d2f9218a71fd93fb4b0cab51fd5b0bb3ec38100443ee5577787a278cd7b6d394`)
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    this.setState({
+                        fotosCurated: [...this.state.fotosCurated, ...responseJson],
+                        fetchingStatus: false
+                    });
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        });
     }
 
     loadMorePictures = () => {
@@ -99,6 +118,8 @@ export default class Home extends Component {
                         keyExtractor={item => item.id}
                         data={this.state.fotosCurated}
                         horizontal={true}
+                        onEndReached={this.loadMoreCuratedPictures}
+                        onEndReachedThreshold={0.1}
                         renderItem={({ item }) =>
 
                             <View>

@@ -2,7 +2,8 @@
 import React, { Component } from 'react';
 import {
     StackNavigator,
-    createBottomTabNavigator
+    createBottomTabNavigator,
+    createStackNavigator
 } from 'react-navigation';
 import {
     StyleSheet,
@@ -16,21 +17,27 @@ import Login from './screens/Login'
 
 
 class HomeScreen extends Component {
-    static navigationOptions = ({ navigation }) => {
-        return {
-            title: 'Home',
-            headerRight: (
-                <TouchableOpacity style={styles.searchButton}
-                    onPress={() => navigation.navigate('SearchScreen')}>
-                    <Icon name="search" size={20} color="white" />
-                </TouchableOpacity>
-            )
-        }
-    }
 
-    // sair = () => {
-    //     this.props.navigation.navigate('LoginScreen')
+    static navigationOptions = {
+        title: 'Home'
+    };
+    // static navigationOptions = ({ navigation }) => {
+    //     return {
+    //         title: 'Home',
+    //         headerRight: (
+    //             <TouchableOpacity style={styles.searchButton}
+    //                 onPress={() => navigation.navigate('SearchScreen')}>
+    //                 <Icon name="search" size={20} color="white" />
+    //             </TouchableOpacity>
+    //         )
+    //     }
     // }
+
+    sair = () => {
+        AsyncStorage.removeItem('usuario')
+        // console.warn('deu logout')
+        this.props.navigation.navigate('LoginScreen')
+    }
 
     render() {
         return (
@@ -72,23 +79,11 @@ const styles = StyleSheet.create({
     }
 })
 
-// const MainNav = StackNavigator({
-//     Home: { screen: HomeScreen },
-//     Search: { screen: SearchScreen },
-// });
-
-// const TopLevelNav = StackNavigator({
-//     Login: { screen: LoginScreen },
-//     Main: { screen: MainNav },
-// }, {
-//         headerMode: 'none',
-//     });
-
-export default createBottomTabNavigator(
+// export default createBottomTabNavigator(
+const Tabs = createBottomTabNavigator(
     {
-        HomeScreen: HomeScreen,
-        SearchScreen: SearchScreen,
-        LoginScreen: LoginScreen,
+        HomeScreen: {screen: HomeScreen},
+        SearchScreen: {screen: SearchScreen},
         // TopLevelNav: TopLevelNav
     },
     {
@@ -112,6 +107,32 @@ export default createBottomTabNavigator(
     }
 );
 
+const RootStack = createStackNavigator({
+    
+    LoginScreen: {
+        screen: LoginScreen,
+        
+    },
+    Tabs: {
+        screen: Tabs
+    }
+}, {
+        initialRouteName: 'Tabs', // função para ver se ta logado ou nao
+        navigationOptions: {
+            header: null
+        }
+        //     headerStyle: {
+        //         backgroundColor: 'black',
+        //     },
+        //     headerTintColor: '#fff',
+        //     headerTitleStyle: {
+        //         fontWeight: 'bold',
+        //     }
+        // }
+    },
+);
+
+export default RootStack
 
 
 // navigationOptions = ({ navigation }) => {
@@ -151,26 +172,14 @@ export default createBottomTabNavigator(
 //     }
 // }
 
+// const MainNav = StackNavigator({
+//     Home: { screen: HomeScreen },
+//     Search: { screen: SearchScreen },
+// });
 
-// const RootStack = createStackNavigator(
-//     {
-//         HomeScreen: HomeScreen,
-//         SearchScreen: SearchScreen
-//         // LoginScreen: LoginScreen
-//     },
-//     {
-//         initialRouteName: 'HomeScreen',
-//         navigationOptions: {
-//             // headerRight: <Header />,
-//             headerStyle: {
-//                 backgroundColor: 'black',
-//             },
-//             headerTintColor: '#fff',
-//             headerTitleStyle: {
-//                 fontWeight: 'bold',
-//             }
-//         }
-//     },
-// );
-
-// export default RootStack
+// const TopLevelNav = StackNavigator({
+//     Login: { screen: LoginScreen },
+//     Main: { screen: MainNav },
+// }, {
+//         headerMode: 'none',
+//     });

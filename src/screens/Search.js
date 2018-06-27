@@ -7,10 +7,7 @@ import {
     TouchableOpacity,
     Dimensions,
     ScrollView,
-    Text,
     Keyboard,
-    FlatList,
-    Image
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import PicturesFeed from '../components/PicturesFeed'
@@ -87,12 +84,20 @@ export default class Search extends Component {
                     </TouchableOpacity>
                 </View>
 
-                <ScrollView style={styles.resultsList}>
-                    <PicturesFeed fotos={this.state.fotos}
-                        loadMorePictures={this.loadMorePictures}
-                        fetchingStatus={this.state.fetchingStatus}
-                    />
-                </ScrollView>
+                {
+                    this.state.fotos.length !== 0 ?
+                        <ScrollView style={styles.resultsList}>
+                            <PicturesFeed fotos={this.state.fotos}
+                                loadMorePictures={this.loadMorePictures}
+                                fetchingStatus={this.state.fetchingStatus}
+                            />
+                        </ScrollView>
+                        :
+                        null
+
+                }
+
+
             </View>
         );
     }
