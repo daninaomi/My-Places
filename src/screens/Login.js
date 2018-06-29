@@ -23,52 +23,7 @@ export default class Login extends Component {
     }
 
     fazLogin = () => {
-
-        let usuario = {
-            email: this.state.email,
-            password: this.state.senha
-        }
-
-        const request = {
-            method: 'POST',
-            body: JSON.stringify(usuario),
-            headers: new Headers({
-                "Content-type": "application/json"
-            })
-        }
-
-        const uri = `https://unsplash.com/oauth/authorize?
-        redirect_uri=urn:ietf:wg:oauth:2.0:oob
-        &response_type=code
-        &scope=public+read_user
-        &client_id=d2f9218a71fd93fb4b0cab51fd5b0bb3ec38100443ee5577787a278cd7b6d394`
-
-        // fetch(uri, request)
-        fetch(uri)
-            .then(response => {
-                if (!response.ok)
-                    throw new Error('Não deu pra logar ai mermao')
-
-                return response.json()
-                // return JSON.parse(response)
-            })
-            .then(json => {
-                // const usuario = {
-                //     email: this.state.email,
-                //     token: _id
-                // }
-
-                // AsyncStorage.setItem('usuario', JSON.stringify(usuario))
-                // AsyncStorage.setItem('email', usuario.email)
-                // AsyncStorage.setItem('token', json._id)
-
-                console.warn(json)
-            })
-            // .then(this.props.login())
-            .catch(error => {
-                console.warn('nao logou')
-                this.setState({ validacao: error.message })
-            })
+        this.props.login()
     }
 
     render() {
