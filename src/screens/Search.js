@@ -13,6 +13,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import PicturesFeed from '../components/PicturesFeed'
 
 const width = Dimensions.get('screen').width;
+const height = Dimensions.get('screen').height;
 
 export default class Search extends Component {
 
@@ -68,7 +69,7 @@ export default class Search extends Component {
 
     render() {
         return (
-            <View>
+            <View style={styles.container}>
                 <View style={styles.searchContainer}>
                     <TextInput style={styles.searchInput}
                         placeholder='o que procura?'
@@ -84,8 +85,7 @@ export default class Search extends Component {
                     </TouchableOpacity>
                 </View>
 
-                {
-                    this.state.fotos.length !== 0 ?
+                { this.state.fotos.length !== 0 ?
                         <ScrollView style={styles.resultsList}>
                             <PicturesFeed fotos={this.state.fotos}
                                 loadMorePictures={this.loadMorePictures}
@@ -94,9 +94,7 @@ export default class Search extends Component {
                         </ScrollView>
                         :
                         null
-
                 }
-
 
             </View>
         );
@@ -104,9 +102,13 @@ export default class Search extends Component {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        height: height,
+        backgroundColor: 'black'
+    },
     searchContainer: {
         flexDirection: 'row',
-        padding: 15
+        padding: 15,
     },
     title: {
         fontSize: 22,
@@ -142,6 +144,7 @@ const styles = StyleSheet.create({
         height: (width / 2) - 25
     },
     resultsList: {
+        backgroundColor: 'black',
         marginBottom: 80
     }
 })

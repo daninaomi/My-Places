@@ -36,22 +36,19 @@ export default class PicturesFeed extends Component {
                     }
                 />
 
-                <View style={styles.footerStyle}>
+                {
+                    this.props.fetchingStatus ?
+                        <ActivityIndicator color="#542C8A" style={{ marginTop: 10 }} />
+                        :
+                        null
+                }
 
+                <View style={styles.footerStyle}>
                     <TouchableOpacity style={styles.buttonLoadMore}
                         activeOpacity={0.7}
                         onPress={this.props.loadMorePictures}
                     >
-
                         <Text style={styles.buttonText}>Carregar mais fotos</Text>
-                        {
-                            (this.props.fetchingStatus)
-                                ?
-                                <ActivityIndicator color="#542C8A" style={{ marginTop: 10 }} />
-                                :
-                                null
-                        }
-
                     </TouchableOpacity>
                 </View>
 
@@ -68,9 +65,11 @@ const styles = StyleSheet.create({
         marginLeft: 15
     },
     photoDescription: {
-        marginBottom: 5,
-        fontSize: 18,
-        textDecorationLine: 'underline'
+        marginBottom: 10,
+        fontSize: 16,
+        fontStyle: 'italic',
+        color: 'white',
+        // textDecorationLine: 'underline',
     },
     imagem: {
         width: (width) - 25,

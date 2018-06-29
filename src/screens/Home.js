@@ -159,32 +159,33 @@ export default class Home extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'white'
+        paddingTop: 50,
+        backgroundColor: 'black'
     },
     title: {
         margin: 15,
         marginTop: 30,
         marginBottom: 25,
-        fontSize: 22
+        fontSize: 22,
+        color: 'white'
     },
     subtitle: {
         padding: 15,
-        backgroundColor: '#5E5E5E',
-        color: 'white',
+        backgroundColor: 'white',
+        color: 'black',
         fontSize: 20,
         fontWeight: 'bold'
     },
     featuresSection: {
         paddingTop: 15,
-        paddingBottom: 15,
-        backgroundColor: '#5E5E5E'
+        // paddingBottom: 15,
+        backgroundColor: 'white'
     },
     featuredPics: {
         width: width / 2,
         height: width / 2
     },
     photoCard: {
-        // flexDirection: 'row',
         marginTop: 15,
         marginLeft: 15
     },
